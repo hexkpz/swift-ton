@@ -1,5 +1,5 @@
 {
-  "originHash" : "7e964310fe93e1ecc3ed39f769f411a10787d2b186141183848a9a4835338d8b",
+  "originHash" : "9abd99c58ef54310694a033c5a1744e995f39484513485bfe7df0e79f9e39618",
   "pins" : [
     {
       "identity" : "bigint",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hexkpz/swift-bip.git",
       "state" : {
-        "revision" : "3021feef86c7bef7b02bd55a854e80794c0cc1e0",
-        "version" : "0.0.1"
+        "revision" : "f8c701b18fa090f012a64e936a3e7192eb876bea",
+        "version" : "0.0.2"
       }
     },
     {
