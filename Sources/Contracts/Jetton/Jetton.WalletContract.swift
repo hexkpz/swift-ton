@@ -39,6 +39,18 @@ public extension Jetton {
         // MARK: Public
 
         public let rawValue: Contract
+
+        public func data(
+            using networkProvider: any NetworkProvider,
+            in network: NetworkKind = .mainnet
+        ) async throws -> GetWalletData.Response {
+            try await execute(
+                \.getWalletData,
+                arguments: (),
+                using: networkProvider,
+                in: network
+            )
+        }
     }
 }
 
@@ -306,5 +318,71 @@ public extension Jetton.WalletContract.InternalMessage {
             try container.encode(excessesResponseAddress)
             try container.encodeIfPresent(additionalPayload)
         }
+    }
+}
+
+// MARK: - Jetton.WalletContract + ContractABI.Methods
+
+extension Jetton.WalletContract: ContractABI.Methods {
+    /// A collection of on-chain methods available for the Jetton wallet contract.
+    public struct MethodCollection {
+        /// The `get_wallet_address` method type, used to retrieve a user’s Jetton wallet address.
+        public var getWalletData: GetWalletData.Type { GetWalletData.self }
+    }
+}
+
+// MARK: - Jetton.WalletContract.GetWalletData
+
+extension Jetton.WalletContract {
+    /// A `Contract.Method` implementation for the `get_wallet_data` call.
+    open class GetWalletData: Contract.Method {
+        // MARK: Lifecycle
+
+        public init() {
+            self.rawValue = ()
+        }
+
+        public required init(rawValue: RawValue) {
+            self.rawValue = rawValue
+        }
+
+        // MARK: Open
+
+        open class var name: String { "get_wallet_data" }
+
+        /// Decodes the returned `Tuple` from the blockchain call and extracts the
+        /// Jetton wallet address as an `Response`.
+        ///
+        /// - Parameter tuple: The raw `Tuple` returned by the network provider.
+        /// - Returns: An `(balance, owner, minter, code)` representing Jetton walle data.
+        /// - Throws:
+        ///   - `Jetton.Error.invalidResponse` if the tuple is empty or its first element
+        ///     cannot be decoded to a `Response`.
+        open func decode(_ tuple: Tuple) throws -> Response {
+            guard tuple.rawValue.count == 4,
+                  case let Tuple.Element.number(balance) = tuple.rawValue[0],
+                  case let Tuple.Element.cell(owner) = tuple.rawValue[1],
+                  case let Tuple.Element.cell(minter) = tuple.rawValue[2],
+                  case let Tuple.Element.cell(code) = tuple.rawValue[3]
+            else { throw Jetton.Error.invalidResponse("Invalid response") }
+            return try (
+                CurrencyValue(rawValue: BigUInt(balance)),
+                owner.decode({ try $0.decode(InternalAddress.self) }),
+                minter.decode({ try $0.decode(InternalAddress.self) }),
+                code,
+            )
+        }
+
+        // MARK: Public
+
+        public typealias RawValue = Void
+        public typealias Response = (
+            balance: CurrencyValue,
+            owner: InternalAddress,
+            minter: InternalAddress,
+            code: Cell
+        )
+
+        public let rawValue: RawValue
     }
 }
