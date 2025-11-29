@@ -30,7 +30,7 @@ extension StackElement: Codable {
                 hexadecimalString.removeFirst(2)
             }
 
-            if hexadecimalString.count == 1 {
+            if !hexadecimalString.count.isMultiple(of: 2) {
                 hexadecimalString = "0\(hexadecimalString)"
             }
 
