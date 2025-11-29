@@ -28,7 +28,7 @@ public struct Tuple: RawRepresentable, Sendable, Hashable {
 public extension Tuple {
     /// An individual element in a `Tuple`, representing one TVM value.
     enum Element: Sendable, Hashable {
-        /// A numeric value, represented by a big-endian byte collection.
+        /// A numeric value, represented by a big-endian raw bytes.
         case number(Data)
 
         /// A nested contract data cell.

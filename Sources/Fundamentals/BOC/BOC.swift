@@ -22,7 +22,7 @@ import Foundation
 public struct BOC: RawRepresentable {
     // MARK: Lifecycle
 
-    /// Attempts to create a `BOC` from a byte collection. If initialization fails
+    /// Attempts to create a `BOC` from a raw bytes. If initialization fails
     /// (e.g., invalid BOC bytes), returns `nil`.
     ///
     /// **Example**:
@@ -37,7 +37,7 @@ public struct BOC: RawRepresentable {
         try? self.init(rawValue)
     }
 
-    /// Initializes a `BOC` from a byte collection, throwing on invalid data.
+    /// Initializes a `BOC` from a raw bytes, throwing on invalid data.
     ///
     /// - Parameter rawValue: The serialized bytes that represent a Bag-of-Cells structure.
     /// - Throws: Any decoding error if the bytes cannot be parsed as a valid BOC.

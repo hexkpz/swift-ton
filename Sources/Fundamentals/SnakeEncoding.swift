@@ -18,7 +18,7 @@ import Bionic
 
 // MARK: - SnakeData
 
-/// A snake-encoded byte collection for storing strings or arbitrary data
+/// A snake-encoded raw bytes for storing strings or arbitrary data
 /// in a recursive "snake" cell layout. Often used to pack more than 1023 bits
 /// across multiple cells.
 public struct SnakeData: RawRepresentable, Sendable, Hashable {

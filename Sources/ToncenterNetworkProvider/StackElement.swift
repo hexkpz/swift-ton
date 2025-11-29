@@ -38,7 +38,7 @@ extension StackElement: Codable {
                 throw DecodingError.dataCorruptedError(
                     forKey: CodingKeys.value,
                     in: container,
-                    debugDescription: "Couldn't decode byte collection `\(originalValue)`"
+                    debugDescription: "Couldn't decode raw bytes `\(originalValue)`"
                 )
             }
 
