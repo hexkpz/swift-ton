@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CredentialsTests",
+        "name" : "CredentialsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FundamentalsTests",
+        "name" : "FundamentalsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ContractsTests",
+        "name" : "ContractsTests"
+      }
+    }
+  ],
+  "version" : 1
+}
