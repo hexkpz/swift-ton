@@ -162,11 +162,10 @@ extension WalletV4R2: ContractABI.ExternalMessages {
         // MARK: Public
 
         public func encode(to container: inout CellEncodingContainer) throws {
-            let untilDate = effectiveEprirationDate(with: expires)
             let body = try Cell {
                 subwallet // wallet_id
                 if seqno > 0 {
-                    untilDate // valid_until
+                    expires.effectiveEprirationDate() // valid_until
                 } else {
                     UInt32.max // valid_until
                 }

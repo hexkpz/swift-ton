@@ -22,30 +22,6 @@ public protocol WalletContractExternalMessage {
     static var maximumMessages: UInt { get }
 }
 
-extension WalletContractExternalMessage {
-    /// A private helper property that returns a default expiration `Date`
-    /// set to one minute (60 seconds) from the current Unix timestamp.
-    /// This is used when no custom expiration time is provided.
-    private var defaultEprirationDateSinceNow: Date {
-        Date(timeIntervalSince1970: Date().timeIntervalSince1970 + 60)
-    }
-
-    /// Computes the effective expiration timestamp for an external message,
-    /// clamping the result to the maximum representable `UInt32` value if necessary.
-    ///
-    /// - Parameter customDate: An optional custom expiration `Date`. If `nil`,
-    ///   a default expiration time (one minute from now) is used.
-    /// - Returns: A `UInt32` representing the Unix timestamp (seconds since 1970)
-    ///            at which the message expires. Values exceeding `UInt32.max`
-    ///            are clamped to `UInt32.max`.
-    func effectiveEprirationDate(with customDate: Date?) -> UInt32 {
-        guard let customDate
-        else { return UInt32(defaultEprirationDateSinceNow.timeIntervalSince1970) }
-        let maximumValue = min(TimeInterval(UInt32.max), customDate.timeIntervalSince1970)
-        return UInt32(maximumValue)
-    }
-}
-
 // MARK: - WalletContractExternalMessageMaximumMessagesError
 
 public struct WalletContractExternalMessageMaximumMessagesError {
@@ -69,7 +45,7 @@ extension WalletContractExternalMessageMaximumMessagesError: LocalizedError {
     }
 }
 
-extension WalletContractExternalMessage {
+public extension WalletContractExternalMessage {
     /// Validates that the number of internal messages does not exceed the
     /// wallet contract’s `maximumMessages` limit. Throws an error if the
     /// count is too high.
@@ -94,5 +70,20 @@ public extension Date {
     /// expiration date.
     static var defaultEprirationDateSinceNow: Date {
         Date(timeIntervalSince1970: Date().timeIntervalSince1970 + 60)
+    }
+}
+
+public extension Optional where Wrapped == Date {
+    /// Computes the effective expiration timestamp for an external message,
+    /// clamping the result to the maximum representable `UInt32` value if necessary.
+    ///
+    /// - Parameter customDate: An optional custom expiration `Date`. If `nil`,
+    ///   a default expiration time (one minute from now) is used.
+    /// - Returns: A `UInt32` representing the Unix timestamp (seconds since 1970)
+    ///            at which the message expires. Values exceeding `UInt32.max`
+    ///            are clamped to `UInt32.max`.
+    func effectiveEprirationDate() -> UInt32 {
+        let date = self ?? .defaultEprirationDateSinceNow
+        return UInt32(min(TimeInterval(UInt32.max), date.timeIntervalSince1970))
     }
 }

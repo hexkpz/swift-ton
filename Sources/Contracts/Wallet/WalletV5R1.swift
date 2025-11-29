@@ -166,12 +166,11 @@ extension WalletV5R1: ContractABI.ExternalMessages {
         // MARK: Public
 
         public func encode(to container: inout CellEncodingContainer) throws {
-            let untilDate = effectiveEprirationDate(with: expires)
             let body = try Cell {
                 UInt32(0x7369_676E) // op_code; external message
                 identifier // wallet_id
                 if seqno > 0 {
-                    untilDate // valid_until
+                    expires.effectiveEprirationDate() // valid_until
                 } else {
                     UInt32.max // valid_until
                 }
