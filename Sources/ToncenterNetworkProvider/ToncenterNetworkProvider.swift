@@ -2,8 +2,14 @@
 //  Created by Anton Spivak
 //
 
+import Foundation
+
 import Fundamentals
 import FundamentalsExtensions
+
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 // MARK: - ToncenterNetworkProvider
 

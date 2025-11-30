@@ -55,3 +55,7 @@ public struct Credentials: RawRepresentable, Sendable {
 
     public let rawValue: Curve25519.Signing.PrivateKey
 }
+
+#if canImport(FoundationNetworking)
+extension Curve25519.Signing.PrivateKey: @retroactive @unchecked Sendable {}
+#endif
