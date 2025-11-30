@@ -103,13 +103,19 @@ extension ToncenterNetworkProvider: NetworkProvider {
         }
 
         let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-        guard let account = decodedResponse.accounts.first,
-              account.address == address
-        else {
-            throw ToncenterError.invalidResponse(
-                "Response does not contain expected data, or address does not match"
-            )
-        }
+        let account = decodedResponse.accounts.first ?? .init(
+            account_state_hash: nil,
+            frozen_hash: nil,
+            address: address,
+            balance: 0,
+            code_boc: nil,
+            code_hash: nil,
+            data_boc: nil,
+            data_hash: nil,
+            last_transaction_hash: nil,
+            last_transaction_lt: nil,
+            status: .nonexistent
+        )
 
         return .init(
             balance: account.balance,
@@ -193,9 +199,7 @@ extension ToncenterNetworkProvider: NetworkProvider {
 
         let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
         guard decodedResponse.exit_code == 0
-        else {
-            throw ToncenterError.invalidResponse("Nonzero exit code: \(decodedResponse.exit_code)")
-        }
+        else { throw ToncenterError.invalidResponse("Bad exit code: \(decodedResponse.exit_code)") }
 
         return .init(rawValue: decodedResponse.stack.map({ .init(from: $0) }))
     }
