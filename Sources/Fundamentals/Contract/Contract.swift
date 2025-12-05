@@ -97,6 +97,11 @@ public struct Contract {
     @inlinable @inline(__always)
     public var stateInitial: StateInit? { _initial }
 
+    /// The last known contract's state that was fetched by `update(using:in)` method.
+    public var wellKnownState: State {
+        _state.withLockedValue({ $0 })
+    }
+
     /// Retrieves the current code cell if known. If the contract is `.active` on the local state, that
     /// active code is returned. Otherwise, if a `StateInit` was provided during initialization and
     /// there have been no updates to override it, that code is returned. If not found, returns `nil`.
