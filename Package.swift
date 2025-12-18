@@ -24,11 +24,11 @@ let package = Package(
         .library(name: "ToncenterNetworkProvider", targets: ["ToncenterNetworkProvider"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-log.git", from: "1.6.1"),
-        .package(url: "https://github.com/apple/swift-crypto.git", from: "3.10.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.8.0"),
+        .package(url: "https://github.com/apple/swift-crypto.git", from: "4.2.0"),
 
-        .package(url: "https://github.com/attaswift/BigInt.git", from: "5.5.1"),
-        .package(url: "https://github.com/hexkpz/swift-bip.git", from: "0.0.2"),
+        .package(url: "https://github.com/attaswift/BigInt.git", from: "5.7.0"),
+        .package(url: "https://github.com/hexkpz/swift-bip.git", from: "0.0.3"),
     ],
     targets: [
         .target(
